@@ -174,3 +174,38 @@
 // }
 
 // console.log(pigIt('Hello world !')); // 'igPay atinlay siay oolcay'
+
+function getPINs(observed) {
+  // TODO: This is your job, detective!
+  const adjacentDigits = {
+    1: ["1", "2", "4"],
+    2: ["1", "2", "3", "5"],
+    3: ["2", "3", "6"],
+    4: ["1", "4", "5", "7"],
+    5: ["2", "4", "5", "6", "8"],
+    6: ["3", "5", "6", "9"],
+    7: ["4", "7", "8"],
+    8: ["5", "7", "8", "9", "0"],
+    9: ["6", "8", "9"],
+    0: ["0", "8"],
+  };
+
+  if (observed.length === 1) {
+    return adjacentDigits[observed];
+  }
+
+  // const cartesian = (a) =>
+  //   a.reduce((a, b) => a.flatMap((d) => b.map((e) => [d, e].flat())));
+  const cartesian = (args) =>
+    args.reduce(
+      (a, b) =>
+        a
+          .map((x) => b.map((y) => x.concat([y])))
+          .reduce((acc, t) => acc.concat(t), []),
+      [[]]
+    );
+  let adjacents = observed.split("").map((digit) => adjacentDigits[digit]);
+  return cartesian(adjacents).map((pin) => pin.join(""));
+}
+
+console.log(getPINs("11")); //  ["11", "22", "44", "12", "21", "14", "41", "24", "42"]
